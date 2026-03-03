@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grêmio Estudantil - Barão de Tinguá</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+header{
+    background:#0033cc;
+    color:white;
+    padding:15px;
+    position:fixed;
+    width:100%;
+    top:0;
+    display:flex;
+    align-items:center;
+    z-index:1000;
+}
+
+.menu-icon{
+    font-size:30px;
+    cursor:pointer;
+    margin-right:20px;
+}
+
+.logo{
+    font-weight:bold;
+}
+
+nav{
+    position:fixed;
+    top:0;
+    left:-250px;
+    width:250px;
+    height:100%;
+    background:#001a66;
+    transition:0.3s;
+    padding-top:60px;
+}
+
+nav a{
+    display:block;
+    color:white;
+    padding:15px;
+    text-decoration:none;
+    font-size:16px;
+}
+
+nav a:hover{
+    background:#0044ff;
+}
+
+section{
+    padding:120px 20px;
+    display:none;
+}
+
+.active{
+    display:block;
+}
+
+h1{
+    color:blue;
+    font-size:36px;
+    font-weight:bold;
+    text-align:center;
+}
+
+.subtitle{
+    max-width:700px;
+    margin:auto;
+    margin-top:15px;
+    text-align:center;
+}
+
+h2{
+    color:#0033cc;
+}
+
+.cargo{
+    background:#f2f2f2;
+    padding:15px;
+    margin-bottom:10px;
+    cursor:pointer;
+    border-radius:5px;
+}
+
+.alunos{
+    display:none;
+    margin-top:10px;
+    background:white;
+    padding:10px;
+}
+
+.aluno-item{
+    margin-bottom:5px;
+}
+
+button{
+    background:#0033cc;
+    color:white;
+    border:none;
+    padding:5px 10px;
+    cursor:pointer;
+    font-size:18px;
+    border-radius:5px;
+}
+
+form{
+    display:none;
+    margin-top:10px;
+}
+
+input{
+    display:block;
+    margin-bottom:10px;
+    padding:5px;
+    width:100%;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="menu-icon" onclick="openMenu()">☰</div>
+    <div class="logo">Colégio Estadual Barão de Tinguá</div>
+</header>
+
+<nav id="menu">
+    <a href="#" onclick="mostrarPagina('home')">Início</a>
+    <a href="#" onclick="mostrarPagina('oque')">O que é Grêmio Estudantil?</a>
+    <a href="#" onclick="mostrarPagina('funcao')">Qual a função do Grêmio Estudantil nas escolas?</a>
+    <a href="#" onclick="mostrarPagina('cargos')">Cargos Grêmio Estudantil 🎓📝</a>
+</nav>
+
+<!-- INÍCIO -->
+<section id="home" class="active">
+    <h1>Grêmio Estudantil</h1>
+    <p class="subtitle">
+        Bem-vindo ao portal do Grêmio Estudantil!
+        Aqui você terá acesso aos cargos exercidos pelos membros,
+        ficará por dentro das programações e conhecerá os deveres
+        e responsabilidades da equipe que representa os estudantes.
+    </p>
+</section>
+
+<!-- O QUE É -->
+<section id="oque">
+    <h2>O que é o Grêmio Estudantil?</h2>
+    <p>
+        O <strong>Grêmio Estudantil</strong> é a entidade representativa dos alunos dentro do colégio.
+        Ele é formado por estudantes eleitos democraticamente para atuar como porta-voz
+        dos interesses da comunidade estudantil, promovendo diálogo, participação e
+        integração entre alunos, professores e equipe gestora.
+    </p>
+</section>
+
+<!-- FUNÇÃO -->
+<section id="funcao">
+    <h2>Qual é a função do Grêmio Estudantil nas escolas?</h2>
+    <p>
+        O Grêmio Estudantil tem como principal função representar os alunos,
+        levando sugestões, demandas e propostas à direção da escola.
+        Além disso, também atua na organização de eventos, projetos culturais,
+        esportivos e sociais, contribuindo para a construção de um ambiente escolar
+        mais participativo, respeitoso e colaborativo.
+    </p>
+</section>
+
+<!-- CARGOS -->
+<section id="cargos">
+    <h2>Cargos do Grêmio Estudantil</h2>
+    <div id="listaCargos"></div>
+</section>
+
+<script>
+
+function openMenu(){
+    var menu = document.getElementById("menu");
+    if(menu.style.left === "0px"){
+        menu.style.left = "-250px";
+    } else {
+        menu.style.left = "0px";
+    }
+}
+
+function mostrarPagina(pagina){
+    document.querySelectorAll("section").forEach(sec => {
+        sec.classList.remove("active");
+    });
+    document.getElementById(pagina).classList.add("active");
+    openMenu();
+}
+
+const cargos = [
+"Presidente",
+"Vice presidente",
+"Secretario geral",
+"Diretor social",
+"Suplentes social",
+"Diretor mídia",
+"Suplentes mídia",
+"Diretor cultural",
+"Suplentes"
+];
+
+const lista = document.getElementById("listaCargos");
+
+cargos.forEach((cargo, index) => {
+
+    let div = document.createElement("div");
+    div.className = "cargo";
+    div.innerHTML = cargo;
+    
+    let alunosDiv = document.createElement("div");
+    alunosDiv.className = "alunos";
+
+    let listaAlunos = document.createElement("div");
+
+    let mensagem = document.createElement("p");
+    mensagem.innerHTML = "<strong>Nenhum aluno cadastrado.</strong>";
+
+    alunosDiv.appendChild(mensagem);
+    alunosDiv.appendChild(listaAlunos);
+
+    let botao = document.createElement("button");
+    botao.innerHTML = "➕";
+    botao.onclick = function(){
+        form.style.display = "block";
+    };
+
+    alunosDiv.appendChild(botao);
+
+    let form = document.createElement("form");
+    form.onsubmit = function(event){
+        event.preventDefault();
+
+        let nome = this.querySelectorAll("input")[0].value;
+        let turma = this.querySelectorAll("input")[1].value;
+        let turno = this.querySelectorAll("input")[2].value;
+
+        let novoAluno = document.createElement("p");
+        novoAluno.className = "aluno-item";
+        novoAluno.innerHTML = `<strong>${nome}</strong> - ${turma} - ${turno}`;
+
+        listaAlunos.appendChild(novoAluno);
+
+        if(listaAlunos.children.length > 0){
+            mensagem.style.display = "none";
+        }
+
+        this.reset();
+        this.style.display = "none";
+    };
+
+    form.innerHTML = `
+        <input type="text" placeholder="Nome completo" required>
+        <input type="text" placeholder="Turma" required>
+        <input type="text" placeholder="Turno" required>
+        <button type="submit">Cadastrar</button>
+    `;
+
+    alunosDiv.appendChild(form);
+
+    div.onclick = function(){
+        alunosDiv.style.display = alunosDiv.style.display === "block" ? "none" : "block";
+    };
+
+    lista.appendChild(div);
+    lista.appendChild(alunosDiv);
+});
+
+</script>
+
+</body>
+</html>
